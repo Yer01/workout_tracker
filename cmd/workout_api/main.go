@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"os"
 
+	"github.com/Yer01/workout_tracker/internal/api/application"
 	"github.com/joho/godotenv"
 )
 
@@ -24,5 +26,13 @@ func main() {
 	}
 
 	defer db.Close()
+
+	app := application.New()
+
+	if err = app.Start(context.TODO()); err != nil {
+		log.Fatalf("Failed to start application: %w", err)
+	}
+
+	os.Exit(0)
 
 }
