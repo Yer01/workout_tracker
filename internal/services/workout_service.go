@@ -1,16 +1,18 @@
 package services
 
-import "database/sql"
+import (
+	"github.com/Yer01/workout_tracker/internal/models"
+)
 
 type WorkoutService interface {
 }
 
 type workoutservice struct {
-	db *sql.DB
+	wr *models.WorkoutRepo
 }
 
-func NewWorkoutService(db *sql.DB) WorkoutService {
+func NewWorkoutService(wr *models.WorkoutRepo) WorkoutService {
 	return workoutservice{
-		db: db,
+		wr: wr,
 	}
 }

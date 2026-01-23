@@ -8,6 +8,8 @@ import (
 
 	"github.com/Yer01/workout_tracker/internal/api/application"
 	"github.com/joho/godotenv"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -30,7 +32,7 @@ func main() {
 	app := application.New()
 
 	if err = app.Start(context.TODO()); err != nil {
-		log.Fatalf("Failed to start application: %w", err)
+		log.Fatalf("Failed to start application: %v", err)
 	}
 
 	os.Exit(0)
