@@ -6,20 +6,22 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func routes() *chi.Mux {
+func routes(cont *Container) *chi.Mux {
 	mux := chi.NewRouter()
-
 	mux.Use(middleware.Logger)
 
 	mux.Get("/", handlers.HomeHandler)
-	mux.Route("/workouts", loadWorkoutRouter)
+	mux.Route("/workouts", func(r chi.Router) {
+		mux.Get("/{id}", cont.WorkoutHandler.Get)
+		mux.Post("/", cont.WorkoutHandler.Create)
+		mux.Put("/{id}", cont.WorkoutHandler.Update)
+	})
 	return mux
 }
 
-func loadWorkoutRouter(mux chi.Router) {
-	handler := &handlers.WorkoutHandler{}
+/*func loadWorkoutRouter(mux chi.Router) {
 
-	mux.Get("/{id}", handler.Get)
+	mux.Get("/{id}", cont.WorkoutHandler.Get)
 	mux.Post("/", handler.Create)
 	mux.Put("/{id}", handler.Update)
-}
+}*/

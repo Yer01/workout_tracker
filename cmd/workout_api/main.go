@@ -29,7 +29,7 @@ func main() {
 
 	defer db.Close()
 
-	app := application.New()
+	app := application.New(db)
 
 	if err = app.Start(context.TODO()); err != nil {
 		log.Fatalf("Failed to start application: %v", err)

@@ -9,18 +9,21 @@ import (
 )
 
 type App struct {
-	router http.Handler
-	DB     *sql.DB
+	router    http.Handler
+	DB        *sql.DB
+	container *Container
 }
 
-func New() *App {
+func New(db *sql.DB) *App {
+	container := NewContainer(db)
 	return &App{
-		router: routes(),
+		router:    routes(container),
+		DB:        db,
+		container: container,
 	}
 }
 
 func (a *App) Start(ctx context.Context) error {
-	cont := NewContainer(a.DB)
 
 	log.Println("Starting server on port 8081...")
 	if err := http.ListenAndServe("localhost:8081", a.router); err != nil {
