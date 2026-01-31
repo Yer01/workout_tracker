@@ -6,10 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/Yer01/workout_tracker/internal/api/handlers"
-	"github.com/Yer01/workout_tracker/internal/models"
-	"github.com/Yer01/workout_tracker/internal/services"
 )
 
 type App struct {
@@ -24,12 +20,7 @@ func New() *App {
 }
 
 func (a *App) Start(ctx context.Context) error {
-
-	wrep := &models.WorkoutRepo{
-		DB: a.DB,
-	}
-	wservice := services.NewWorkoutService(wrep)
-	whandler := handlers.NewWorkoutHandler(wservice)
+	cont := NewContainer(a.DB)
 
 	log.Println("Starting server on port 8081...")
 	if err := http.ListenAndServe("localhost:8081", a.router); err != nil {
