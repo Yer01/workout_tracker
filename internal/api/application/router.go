@@ -18,6 +18,7 @@ func routes(cont *Container) *chi.Mux {
 func loadWorkoutRouter(cont *Container) func(chi.Router) {
 	return func(mux chi.Router) {
 		mux.Get("/{id}", cont.WorkoutHandler.ShowSingle)
+		mux.Get("/", cont.WorkoutHandler.ShowAll)
 		mux.Post("/", cont.WorkoutHandler.Create)
 		mux.Put("/{id}", cont.WorkoutHandler.Update)
 	}

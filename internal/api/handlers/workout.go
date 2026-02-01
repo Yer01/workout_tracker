@@ -47,10 +47,30 @@ func (wh *WorkoutHandler) ShowSingle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (wh *WorkoutHandler) ShowAll(w http.ResponseWriter, r *http.Request) {
+	workouts, err := wh.workout_service.GetAll()
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Problems with fetching all data from database: %v", err)
+		return
+	}
+
+	if err = json.NewEncoder(w).Encode(workouts); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Can't encode all data : %v", err)
+		return
+	}
+}
+
 func (wh *WorkoutHandler) Update(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Updated existing workout")
 }
 
 func (wh *WorkoutHandler) Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Created new workout")
+	name := chi.URLParam(r, "name")
+	content := chi.URLParam(r, "content")
+	exercises := chi.URLParam(r, "exercises")
+	duration := chi.URLParam(r, "duration")
+	create_id, err := wh.workout_service.Create()
 }
