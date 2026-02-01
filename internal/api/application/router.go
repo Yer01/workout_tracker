@@ -11,17 +11,14 @@ func routes(cont *Container) *chi.Mux {
 	mux.Use(middleware.Logger)
 
 	mux.Get("/", handlers.HomeHandler)
-	mux.Route("/workouts", func(r chi.Router) {
-		mux.Get("/{id}", cont.WorkoutHandler.Get)
-		mux.Post("/", cont.WorkoutHandler.Create)
-		mux.Put("/{id}", cont.WorkoutHandler.Update)
-	})
+	mux.Route("/workouts", loadWorkoutRouter(cont))
 	return mux
 }
 
-/*func loadWorkoutRouter(mux chi.Router) {
-
-	mux.Get("/{id}", cont.WorkoutHandler.Get)
-	mux.Post("/", handler.Create)
-	mux.Put("/{id}", handler.Update)
-}*/
+func loadWorkoutRouter(cont *Container) func(chi.Router) {
+	return func(mux chi.Router) {
+		mux.Get("/{id}", cont.WorkoutHandler.ShowSingle)
+		mux.Post("/", cont.WorkoutHandler.Create)
+		mux.Put("/{id}", cont.WorkoutHandler.Update)
+	}
+}

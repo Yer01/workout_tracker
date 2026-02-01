@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
@@ -26,6 +27,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error in setting up database: %v", err)
 	}
+
+	fmt.Println(db.Ping())
 
 	defer db.Close()
 
