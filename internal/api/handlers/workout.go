@@ -68,9 +68,23 @@ func (wh *WorkoutHandler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (wh *WorkoutHandler) Create(w http.ResponseWriter, r *http.Request) {
-	name := chi.URLParam(r, "name")
-	content := chi.URLParam(r, "content")
-	exercises := chi.URLParam(r, "exercises")
-	duration := chi.URLParam(r, "duration")
-	create_id, err := wh.workout_service.Create()
+	name := r.FormValue("name")
+	content := r.FormValue("content")
+	exercises := r.FormValue("exercises")
+	duration, err := strconv.ParseFloat(r.FormValue("duration"), 64)
+	if err != nil {
+		http.Error(w, fmt.Errorf("Duration is wrong type or format: %v", err).Error(), http.StatusBadRequest)
+		log.Printf("Duration is wrong type or format: %v", err)
+		return
+	}
+	create_id, err := wh.workout_service.Create(name, content, exercises, duration)
+
+	if err != nil || create_id == -1 {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Problems with creating new workout: %v", err)
+		return
+	}
+	resp := fmt.Sprintf("Workout #%d was succesfully created!", create_id)
+	log.Println(resp)
+	w.Write([]byte(resp))
 }
