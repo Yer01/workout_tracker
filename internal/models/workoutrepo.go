@@ -1,23 +1,50 @@
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
-type Workout struct {
+type Workout_plan struct {
+	ID             int
+	Total_duration float64
+	Name           string
+	User_id        int
+	Created_at     time.Time
+	Updated_at     time.Time
+	Description    string
+}
+
+type Workout_plan_user struct {
+	User_id    int
 	Workout_id int
-	Name       string
-	Content    string
-	Exercises  string //would be array of exercises later
-	Duration   float64
+	Addet_at   time.Time
+}
+
+type Workout_plan_exercise struct {
+	Workout_id  int
+	Exercise_id int
+	Order_index int
+	Sets        int
+	Reps        int
+	Weight      float64
+	Notes       string
 }
 
 type WorkoutRepo struct {
-	DB *sql.DB
+	db *sql.DB
+}
+
+func NewWorkoutRepo(db *sql.DB) *WorkoutRepo {
+	return &WorkoutRepo{
+		db: db,
+	}
 }
 
 func (wr *WorkoutRepo) Get(id int) (Workout, error) {
 	quer := `SELECT * FROM workouts WHERE workout_id = $1`
 
-	data := wr.DB.QueryRow(quer, id)
+	data := wr.db.QueryRow(quer, id)
 
 	var workout Workout
 	err := data.Scan(&workout.Workout_id, &workout.Name, &workout.Content, &workout.Exercises, &workout.Duration)

@@ -13,9 +13,7 @@ type Container struct {
 }
 
 func NewContainer(db *sql.DB) *Container {
-	wrepo := &models.WorkoutRepo{
-		DB: db,
-	}
+	wrepo := models.NewWorkoutRepo(db)
 	wservice := services.NewWorkoutService(wrepo)
 
 	whandler := handlers.NewWorkoutHandler(wservice)
