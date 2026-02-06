@@ -41,56 +41,56 @@ func NewWorkoutRepo(db *sql.DB) *WorkoutRepo {
 	}
 }
 
-func (wr *WorkoutRepo) Get(id int) (Workout, error) {
-	quer := `SELECT * FROM workouts WHERE workout_id = $1`
+func (wr *WorkoutRepo) Get(id int) (Workout_plan, error) {
+	quer := `SELECT * FROM workout_plans WHERE id = $1`
 
 	data := wr.db.QueryRow(quer, id)
 
-	var workout Workout
-	err := data.Scan(&workout.Workout_id, &workout.Name, &workout.Content, &workout.Exercises, &workout.Duration)
+	var workout Workout_plan
+	err := data.Scan(&workout.ID, &workout.Total_duration, &workout.Name, &workout.User_id, &workout.Created_at, &workout.Updated_at, &workout.Description)
 
 	if err != nil {
-		return Workout{}, err
+		return Workout_plan{}, err
 	}
 
 	return workout, nil
 }
 
-func (wr *WorkoutRepo) GetAll() ([]Workout, error) {
-	quer := `SELECT * FROM workouts`
+func (wr *WorkoutRepo) GetAll() ([]Workout_plan, error) {
+	quer := `SELECT * FROM workout_plans`
 
-	data, err := wr.DB.Query(quer)
+	data, err := wr.db.Query(quer)
 
 	if err != nil {
-		return []Workout{}, err
+		return []Workout_plan{}, err
 	}
 
-	var workouts []Workout
+	var workouts []Workout_plan
 
 	for data.Next() {
-		var workout Workout
+		var workout Workout_plan
 
-		err = data.Scan(&workout.Workout_id, &workout.Name, &workout.Content, &workout.Exercises, &workout.Duration)
+		err := data.Scan(&workout.ID, &workout.Total_duration, &workout.Name, &workout.User_id, &workout.Created_at, &workout.Updated_at, &workout.Description)
 		if err != nil {
-			return []Workout{}, err
+			return []Workout_plan{}, err
 		}
 
 		workouts = append(workouts, workout)
 	}
 
 	if data.Err() != nil {
-		return []Workout{}, data.Err()
+		return []Workout_plan{}, data.Err()
 	}
 
 	return workouts, nil
 }
 
 func (wr *WorkoutRepo) Insert(name string, content string, exercises string, duration float64) (int64, error) {
-	quer := `INSERT INTO workouts 
+	quer := `INSERT INTO workout_plans 
 	(name, content, exercises, duration)
 	VALUES($1, $2, $3, $4) RETURNING workout_id`
 
-	data := wr.DB.QueryRow(quer, name, content, exercises, duration)
+	data := wr.db.QueryRow(quer, name, content, exercises, duration)
 
 	if data.Err() != nil {
 		return -1, data.Err()

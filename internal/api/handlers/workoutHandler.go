@@ -88,3 +88,7 @@ func (wh *WorkoutHandler) Create(w http.ResponseWriter, r *http.Request) {
 	log.Println(resp)
 	w.Write([]byte(resp))
 }
+
+func (wh *WorkoutHandler) Delete(w http.ResponseWriter, r *http.Request) {
+
+}

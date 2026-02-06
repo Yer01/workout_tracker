@@ -5,7 +5,7 @@ import (
 )
 
 type WorkoutService interface {
-	GetSingle(int) (models.Workout, error)
+	GetSingle(int) (models.Workout_plan, error)
 	GetAll() ([]models.Workout, error)
 	Create(string, string, string, float64) (int64, error)
 }
@@ -20,20 +20,21 @@ func NewWorkoutService(wr *models.WorkoutRepo) WorkoutService {
 	}
 }
 
-func (ws *workoutservice) GetSingle(id int) (models.Workout, error) {
-	workout, err := ws.wr.Get(id)
+func (ws *workoutservice) GetSingle(id int) (models.Workout_plan, error) {
+	wplan, err := ws.wr.Get(id)
+
 	if err != nil {
-		return models.Workout{}, err
+		return models.Workout_plan{}, err
 	}
 
-	return workout, nil
+	return wplan, nil
 }
 
-func (ws *workoutservice) GetAll() ([]models.Workout, error) {
+func (ws *workoutservice) GetAll() ([]models.Workout_plan, error) {
 	workouts, err := ws.wr.GetAll()
 
 	if err != nil {
-		return []models.Workout{}, err
+		return []models.Workout_plan{}, err
 	}
 
 	return workouts, nil
