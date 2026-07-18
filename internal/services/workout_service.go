@@ -5,9 +5,9 @@ import (
 )
 
 type WorkoutService interface {
-	GetSingle(int) (models.Workout_plan, error)
+	/*GetSingle(int) (models.Workout_plan, error)
 	GetAll() ([]models.Workout, error)
-	Create(string, string, string, float64) (int64, error)
+	Create(string, string, string, float64) (int64, error)*/
 }
 
 type workoutservice struct {
@@ -20,7 +20,7 @@ func NewWorkoutService(wr *models.WorkoutRepo) WorkoutService {
 	}
 }
 
-func (ws *workoutservice) GetSingle(id int) (models.Workout_plan, error) {
+/*func (ws *workoutservice) GetSingle(id int) (models.Workout_plan, error) {
 	wplan, err := ws.wr.Get(id)
 
 	if err != nil {
@@ -49,3 +49,4 @@ func (ws *workoutservice) Create(name string, content string, exercises string, 
 
 	return create_id, nil
 }
+*/

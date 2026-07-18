@@ -1,14 +1,10 @@
 package handlers
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/Yer01/workout_tracker/internal/services"
-	"github.com/go-chi/chi/v5"
 )
 
 type WorkoutHandler struct {
@@ -25,6 +21,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Workout tracker app")
 }
 
+/*
 func (wh *WorkoutHandler) ShowSingle(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -92,3 +89,4 @@ func (wh *WorkoutHandler) Create(w http.ResponseWriter, r *http.Request) {
 func (wh *WorkoutHandler) Delete(w http.ResponseWriter, r *http.Request) {
 
 }
+*/

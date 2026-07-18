@@ -12,15 +12,24 @@ func routes(cont *Container) *chi.Mux {
 
 	mux.Get("/", handlers.HomeHandler)
 	mux.Route("/workouts", loadWorkoutRouter(cont))
+	mux.Route("/auth", loadAuthRouter(cont))
+
 	return mux
+}
+
+func loadAuthRouter(cont *Container) func(chi.Router) {
+	return func(mux chi.Router) {
+		mux.Post("/signup", cont.AuthHandler.Register)
+		//mux.Post("/signin", )
+	}
 }
 
 func loadWorkoutRouter(cont *Container) func(chi.Router) {
 	return func(mux chi.Router) {
-		mux.Get("/{id}", cont.WorkoutHandler.ShowSingle)
+		/*mux.Get("/{id}", cont.WorkoutHandler.ShowSingle)
 		mux.Get("/", cont.WorkoutHandler.ShowAll)
 		mux.Post("/new", cont.WorkoutHandler.Create)
 		mux.Put("/{id}", cont.WorkoutHandler.Update)
-		mux.Delete("/{id}", cont.WorkoutHandler.Delete)
+		mux.Delete("/{id}", cont.WorkoutHandler.Delete)*/
 	}
 }
